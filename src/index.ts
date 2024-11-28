@@ -3,8 +3,9 @@ import { googleAI, gemini15Flash } from '@genkit-ai/googleai'
 import pdf from 'pdf-parse'
 import fs from 'fs'
 
+
 const ai = genkit({
-  plugins: [googleAI()],
+  plugins: [googleAI({apiKey: `${process.env.GOOGLE_GENAI_API_KEY}`})],
   model: gemini15Flash,
 });
 
