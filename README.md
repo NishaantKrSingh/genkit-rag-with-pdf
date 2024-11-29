@@ -12,4 +12,4 @@ Codelab:
 ## Resources:
 1. [Getting Started with Genkit](https://gradus.dev/labs/getting-started-with-genkit-(version-0.9)-XmKjXD)
 2. [Office Doc](https://firebase.google.com/docs/genkit/rag)
-3. [Genkit RAG Codelab]()
+3. [Genkit RAG Codelab](https://gradus.dev/labs/retrieval-augmented-generation-(rag)-with-genkit-1B4vN2)
