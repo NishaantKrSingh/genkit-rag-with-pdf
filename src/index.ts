@@ -2,6 +2,7 @@ import { z, genkit,indexerRef, run } from 'genkit';
 import { Document } from 'genkit/retriever';
 import { googleAI, gemini15Flash,textEmbeddingGecko001 } from '@genkit-ai/googleai'
 import pdf from 'pdf-parse'
+import fs from 'fs'
 import { devLocalIndexerRef, devLocalVectorstore, devLocalRetrieverRef } from '@genkit-ai/dev-local-vectorstore';
 import { chunk } from 'llm-chunk';
 
@@ -42,7 +43,7 @@ const indexMenu = ai.defineFlow(
   },
   async () => {
     // Read the pdf.
-    const pdfTxt = await pdf(fs.readFileSync("nish-js.pdf"));
+    const pdfTxt = await pdf(fs.readFileSync("Harry_Potter.pdf"));
 
     // Divide the pdf text into segments.
     const chunks = await run('chunk-it', async () =>
