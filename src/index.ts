@@ -2,14 +2,12 @@ import { z, genkit,indexerRef, run } from 'genkit';
 import { Document } from 'genkit/retriever';
 import { googleAI, gemini15Flash,textEmbeddingGecko001 } from '@genkit-ai/googleai'
 import pdf from 'pdf-parse'
-import fs from 'fs'
 import { devLocalIndexerRef, devLocalVectorstore, devLocalRetrieverRef } from '@genkit-ai/dev-local-vectorstore';
 import { chunk } from 'llm-chunk';
 
+// Env Setup
 import dotenv from 'dotenv'
 dotenv.config()
-
-
 
 const ai = genkit({
   plugins: [
@@ -24,7 +22,10 @@ const ai = genkit({
   model: gemini15Flash,
 });
 
+// Define an Indexer
 export const PdfIndexer = devLocalIndexerRef('facts');
+
+// Create chunking config
 const chunkingConfig = {
   minLength: 1000,
   maxLength: 2000,
@@ -33,15 +34,13 @@ const chunkingConfig = {
   delimiters: '',
 } as any;
 
-
+// Define indexer flow
 const indexMenu = ai.defineFlow(
   {
     name: 'indexMenu',
     inputSchema: z.string()
   },
   async () => {
-    
-
     // Read the pdf.
     const pdfTxt = await pdf(fs.readFileSync("nish-js.pdf"));
 
@@ -49,11 +48,6 @@ const indexMenu = ai.defineFlow(
     const chunks = await run('chunk-it', async () =>
       chunk(pdfTxt.text, chunkingConfig)
     );
-
-    // Convert chunks of text into documents to store in the index.
-    // const documents = chunks.map((text) => {
-      // return Document.fromText(text, { filePath });
-    // });
 
     // Add documents to the index.
     await ai.index({
@@ -63,8 +57,10 @@ const indexMenu = ai.defineFlow(
   }
 );
 
+// Create the indexer
 export const retriever = devLocalRetrieverRef('facts')
 
+// Define Flow for Prompt
 const helloFlow = ai.defineFlow(
     {name: 'hello', inputSchema: z.string(), outputSchema: z.string()}, 
     async (ques) => {
